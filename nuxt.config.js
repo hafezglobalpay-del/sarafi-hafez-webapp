@@ -50,8 +50,16 @@ export default defineNuxtConfig({
   },
   nitro: {
     routeRules: {},
-    vite: {
+    rollupConfig: {
       plugins: [defuFix()]
+    }
+  },
+  hooks: {
+    'nitro:config'(nitroConfig) {
+      // Ensure the defu-compat plugin is used in Nitro's build
+      nitroConfig.rollupConfig = nitroConfig.rollupConfig || {}
+      nitroConfig.rollupConfig.plugins = nitroConfig.rollupConfig.plugins || []
+      nitroConfig.rollupConfig.plugins.push(defuFix())
     }
   },
   tailwindcss: {
