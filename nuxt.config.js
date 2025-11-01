@@ -35,7 +35,7 @@ const CustomPreset = definePreset(Aura, {
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   ssr: false,
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
   modules: [
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
@@ -127,5 +127,13 @@ export default defineNuxtConfig({
   server: {
     port: 4000,
     host: '0.0.0.0'
+  },
+  vite: {
+    optimizeDeps: {
+      include: ['defu']
+    },
+    ssr: {
+      noExternal: []
+    }
   }
 })
