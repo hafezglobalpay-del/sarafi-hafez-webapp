@@ -51,28 +51,21 @@ export default function defuFix() {
       let modified = false
       let updatedCode = code
       
-      // Transform node_modules files that import from 'defu'
-      if (id.includes('node_modules') && updatedCode.includes('from \'defu\'')) {
-        // Fix: import { defu } from 'defu' -> import { defu } from 'defu-compat'
-        if (updatedCode.includes('import { defu } from \'defu\'')) {
-          updatedCode = updatedCode.replace(
-            /import\s+{\s*defu\s*}\s+from\s+['"]defu['"]/g,
-            () => {
-              modified = true
-              return `import { defu } from 'defu-compat'`
-            }
-          )
-        }
+      // Transform ALL files that import defu with named imports
+      // Handle both single and double quotes, and any file location
+      if (updatedCode.includes('from') && (updatedCode.includes('\'defu\'') || updatedCode.includes('"defu"'))) {
+        // Fix: import { defu } from 'defu' or "defu" -> import { defu } from 'defu-compat'
+        updatedCode = updatedCode.replace(
+          /import\s+{\s*defu\s*}\s+from\s+['"]defu['"]/g,
+          () => {
+            modified = true
+            return `import { defu } from 'defu-compat'`
+          }
+        )
         
-        // Fix: import defu, { ... } from 'defu' (already correct, but ensure compatibility)
-        if (updatedCode.includes('import defu') && updatedCode.includes('from \'defu\'')) {
-          // Check if it's using default import correctly
-          // This should work as-is, but we'll check for any named defu imports
-        }
-        
-        // Fix imports with defuFn
+        // Fix imports with defuFn (handle both single and double quotes)
         if (updatedCode.includes('defuFn')) {
-          // Handle: import { defuFn } from 'defu'
+          // Handle: import { defuFn } from 'defu' or "defu"
           updatedCode = updatedCode.replace(
             /import\s+{\s*defuFn\s*}\s+from\s+['"]defu['"]/g,
             () => {
@@ -81,7 +74,7 @@ export default function defuFix() {
             }
           )
           
-          // Handle: import { defu, defuFn } from 'defu'
+          // Handle: import { defu, defuFn } from 'defu' or "defu"
           updatedCode = updatedCode.replace(
             /import\s+{\s*defu[,\s]*defuFn[^}]*}\s+from\s+['"]defu['"]/g,
             () => {
@@ -90,7 +83,7 @@ export default function defuFix() {
             }
           )
           
-          // Handle: import defu, { defuFn } from 'defu'
+          // Handle: import defu, { defuFn } from 'defu' or "defu"
           updatedCode = updatedCode.replace(
             /import\s+defu[,\s]*{\s*defuFn[^}]*}\s+from\s+['"]defu['"]/g,
             () => {
@@ -99,55 +92,17 @@ export default function defuFix() {
             }
           )
           
-          // Handle: import { ...defuFn... } from 'defu'
+          // Handle: import { ...defuFn... } from 'defu' or "defu"
           updatedCode = updatedCode.replace(
             /import\s+{\s*([^}]*defuFn[^}]*)\s*}\s+from\s+['"]defu['"]/g,
             (match, imports) => {
               modified = true
               // Check if defu is also in the imports
-              if (imports.includes('defu') && !imports.includes('defu,')) {
-                return `import { ${imports} } from 'defu-compat'`
-              }
-              return `import { ${imports} } from 'defu-compat'`
-            }
-          )
-        }
-      }
-      
-      // Also transform .nuxt files
-      if (id.includes('.nuxt') && updatedCode.includes('from \'defu\'')) {
-        // Fix named import of defu
-        if (updatedCode.includes('import { defu } from \'defu\'')) {
-          updatedCode = updatedCode.replace(
-            /import\s+{\s*defu\s*}\s+from\s+['"]defu['"]/g,
-            () => {
-              modified = true
-              return `import { defu } from 'defu-compat'`
-            }
-          )
-        }
-        
-        // Fix defuFn imports in .nuxt files
-        if (updatedCode.includes('defuFn')) {
-          updatedCode = updatedCode.replace(
-            /import\s+{\s*defuFn\s*}\s+from\s+['"]defu['"]/g,
-            () => {
-              modified = true
-              return `import { defuFn } from 'defu-compat'`
-            }
-          )
-          updatedCode = updatedCode.replace(
-            /import\s+{\s*defu[,\s]*defuFn[^}]*}\s+from\s+['"]defu['"]/g,
-            () => {
-              modified = true
-              return `import { defu, defuFn } from 'defu-compat'`
-            }
-          )
-          updatedCode = updatedCode.replace(
-            /import\s+defu[,\s]*{\s*defuFn[^}]*}\s+from\s+['"]defu['"]/g,
-            () => {
-              modified = true
-              return `import { defu, defuFn } from 'defu-compat'`
+              const needsDefu = !imports.includes('defu')
+              const cleanImports = imports.trim()
+              return needsDefu 
+                ? `import { defu, ${cleanImports} } from 'defu-compat'`
+                : `import { ${cleanImports} } from 'defu-compat'`
             }
           )
         }
