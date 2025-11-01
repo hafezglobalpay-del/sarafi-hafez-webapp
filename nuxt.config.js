@@ -1,5 +1,6 @@
 import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
+import defuFix from './vite.defu-fix.js'
 
 const CustomPreset = definePreset(Aura, {
   semantic: {
@@ -132,8 +133,12 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['defu']
     },
+    resolve: {
+      dedupe: ['defu']
+    },
     ssr: {
       noExternal: []
-    }
+    },
+    plugins: [defuFix()]
   }
 })
