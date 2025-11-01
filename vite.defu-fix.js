@@ -14,17 +14,35 @@ export default function defuFix() {
       if (id === 'defu-compat') {
         // Provide compatibility exports for defu v6
         return `
-          import defuDefault, { createDefu } from 'defu'
+          import defuDefault from 'defu'
           
           // defu v6 exports defu as default, but some packages expect named export
           export const defu = defuDefault
           export default defuDefault
-          export { createDefu }
           
-          // Provide defuFn using createDefu (was removed in v6)
-          export const defuFn = createDefu((utils, ...args) => {
-            return utils.fn(...args)
-          })
+          // Provide defuFn - recreate the functionality that was removed in v6
+          // defuFn was a function that merged objects, with functions being executed
+          export function defuFn(...args) {
+            return args.reduce((acc, curr) => {
+              if (!curr || typeof curr !== 'object') return acc
+              const keys = Object.keys(curr)
+              for (const key of keys) {
+                const currVal = curr[key]
+                const accVal = acc[key]
+                
+                // If current value is a function, execute it with accumulated value
+                if (typeof currVal === 'function') {
+                  acc[key] = currVal(accVal, acc, key)
+                } else if (currVal && typeof currVal === 'object' && !Array.isArray(currVal) && accVal && typeof accVal === 'object' && !Array.isArray(accVal)) {
+                  // Deep merge objects
+                  acc[key] = defuFn(accVal, currVal)
+                } else if (currVal !== undefined) {
+                  acc[key] = currVal
+                }
+              }
+              return acc
+            }, {})
+          }
         `
       }
       return null
