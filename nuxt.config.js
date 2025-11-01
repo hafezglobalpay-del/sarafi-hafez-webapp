@@ -50,6 +50,9 @@ export default defineNuxtConfig({
   },
   nitro: {
     routeRules: {},
+    vite: {
+      plugins: [defuFix()]
+    }
   },
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',

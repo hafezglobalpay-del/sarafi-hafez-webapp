@@ -86,7 +86,8 @@ export default function defuFix() {
       let updatedCode = code
       
       // Transform ALL files that import defu with named imports
-      // Handle both single and double quotes, and any file location
+      // Handle both single and double quotes, and any file location (including virtual modules)
+      // Virtual modules can have ids like "virtual:#nitro-internal-virtual/app-config"
       if (updatedCode.includes('from') && (updatedCode.includes('\'defu\'') || updatedCode.includes('"defu"'))) {
         // Fix: import { createDefu } from 'defu' or "defu" -> import { createDefu } from 'defu-compat'
         updatedCode = updatedCode.replace(
