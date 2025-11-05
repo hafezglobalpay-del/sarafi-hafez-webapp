@@ -205,87 +205,6 @@
             </div>
 
             <div>
-              <label for="register-occupation" class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('auth.occupation') }}
-              </label>
-              <InputText
-                id="register-occupation"
-                v-model="registerForm.occupation"
-                type="text"
-                :placeholder="$t('auth.occupationPlaceholder')"
-                class="w-full"
-                :class="{ 'p-invalid': registerErrors.occupation }"
-                required
-              />
-              <small v-if="registerErrors.occupation" class="p-error mt-1 block">{{ registerErrors.occupation }}</small>
-            </div>
-
-            <div>
-              <label for="register-nationalCode" class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('auth.nationalCode') }}
-              </label>
-              <InputText
-                id="register-nationalCode"
-                v-model="registerForm.national_code"
-                type="text"
-                :placeholder="$t('auth.nationalCodePlaceholder')"
-                class="w-full"
-                :class="{ 'p-invalid': registerErrors.national_code }"
-                maxlength="10"
-                required
-              />
-              <small v-if="registerErrors.national_code" class="p-error mt-1 block">{{ registerErrors.national_code }}</small>
-            </div>
-
-            <div>
-              <label for="register-address" class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('auth.address') }}
-              </label>
-              <Textarea
-                id="register-address"
-                v-model="registerForm.address"
-                :placeholder="$t('auth.addressPlaceholder')"
-                class="w-full"
-                :class="{ 'p-invalid': registerErrors.address }"
-                rows="3"
-                required
-              />
-              <small v-if="registerErrors.address" class="p-error mt-1 block">{{ registerErrors.address }}</small>
-            </div>
-
-            <div>
-              <label for="register-bankName" class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('auth.bankName') }}
-              </label>
-              <InputText
-                id="register-bankName"
-                v-model="registerForm.bank_name"
-                type="text"
-                :placeholder="$t('auth.bankNamePlaceholder')"
-                class="w-full"
-                :class="{ 'p-invalid': registerErrors.bank_name }"
-                required
-              />
-              <small v-if="registerErrors.bank_name" class="p-error mt-1 block">{{ registerErrors.bank_name }}</small>
-            </div>
-
-            <div>
-              <label for="register-bankAccount" class="block text-sm font-medium text-gray-700 mb-2">
-                {{ $t('auth.bankAccountNumber') }}
-              </label>
-              <InputText
-                id="register-bankAccount"
-                v-model="registerForm.bank_account_number"
-                type="text"
-                :placeholder="$t('auth.bankAccountNumberPlaceholder')"
-                class="w-full"
-                :class="{ 'p-invalid': registerErrors.bank_account_number }"
-                required
-              />
-              <small v-if="registerErrors.bank_account_number" class="p-error mt-1 block">{{ registerErrors.bank_account_number }}</small>
-            </div>
-
-            <div>
               <Button
                 type="submit"
                 :label="$t('auth.register')"
@@ -345,12 +264,7 @@ const registerForm = ref({
   email: '',
   mobile: '',
   password: '',
-  password_confirmation: '',
-  occupation: '',
-  national_code: '',
-  address: '',
-  bank_name: '',
-  bank_account_number: ''
+  password_confirmation: ''
 })
 
 const registerErrors = ref({})
@@ -407,29 +321,7 @@ const validateRegisterForm = () => {
   } else if (registerForm.value.password !== registerForm.value.password_confirmation) {
     registerErrors.value.password_confirmation = t('validation.passwordMatch')
   }
-  
-  if (!registerForm.value.occupation) {
-    registerErrors.value.occupation = t('validation.occupationRequired')
-  }
-  
-  if (!registerForm.value.national_code) {
-    registerErrors.value.national_code = t('validation.nationalCodeRequired')
-  } else if (!/^\d{10}$/.test(registerForm.value.national_code)) {
-    registerErrors.value.national_code = t('validation.nationalCodeInvalid')
-  }
-  
-  if (!registerForm.value.address) {
-    registerErrors.value.address = t('validation.addressRequired')
-  }
-  
-  if (!registerForm.value.bank_name) {
-    registerErrors.value.bank_name = t('validation.bankRequired')
-  }
-  
-  if (!registerForm.value.bank_account_number) {
-    registerErrors.value.bank_account_number = t('validation.bankAccountRequired')
-  }
-  
+
   return Object.keys(registerErrors.value).length === 0
 }
 
@@ -495,12 +387,7 @@ watch(() => props.visible, (newVal) => {
       email: '',
       mobile: '',
       password: '',
-      password_confirmation: '',
-      occupation: '',
-      national_code: '',
-      address: '',
-      bank_name: '',
-      bank_account_number: ''
+      password_confirmation: ''
     }
     loginErrors.value = {}
     registerErrors.value = {}

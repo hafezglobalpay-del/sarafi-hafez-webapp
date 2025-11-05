@@ -2,7 +2,7 @@
   <div class="min-h-screen p-4 flex items-center justify-center">
     <Card class="w-full max-w-2xl mx-auto shadow-lg">
       <template #content>
-        <div class="p-8">
+        <div class="p-6 md:p-8">
           <CurrencyPairDisplay 
             :base-currency="selectedCurrencyData?.base_currency"
             :quote-currency="selectedCurrencyData?.quote_currency"
@@ -13,16 +13,12 @@
             :currencies="currencies"
           />
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div class="mb-6">
             <PriceCard 
-              :currency="selectedCurrencyData?.base_currency"
+              :quote-currency="selectedCurrencyData?.quote_currency"
+              :base-currency="selectedCurrencyData?.base_currency"
               :price="selectedCurrencyData?.buy_price"
-              label-key="buyPrice"
-            />
-            <PriceCard 
-              :currency="selectedCurrencyData?.base_currency"
-              :price="selectedCurrencyData?.sell_price"
-              label-key="sellPrice"
+              label-key="Buy Price"
             />
           </div>
 
@@ -65,7 +61,7 @@
 
           <Button 
             v-if="!isLoggedIn || isUserVerified"
-            :label="isCreatingInvoice ? $t('creatingInvoice') : $t('payNow')" 
+            :label="isCreatingInvoice ? $t('creatingInvoice') : (!isLoggedIn ? $t('loginFirst') : $t('pay'))" 
             severity="primary"
             class="w-full py-4 text-xl font-semibold"
             :loading="isCreatingInvoice"

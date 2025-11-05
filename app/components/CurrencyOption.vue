@@ -12,7 +12,7 @@
         class="relative -ml-2 z-20 border-2 border-white rounded-full shadow-sm" 
       />
     </div>
-    <span>{{ currency?.title || 'Unknown' }}</span>
+    <span>{{ currency?.title || '—' }}</span>
   </div>
 </template>
 

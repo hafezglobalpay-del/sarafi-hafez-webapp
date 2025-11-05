@@ -153,6 +153,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     // Extract headers from opts to prevent override
     const { headers: optsHeaders, onRequest: customOnRequest, onResponse: customOnResponse, onResponseError: customOnResponseError, ...restOpts } = opts
     
+    let errorShown = false
+    
     return useFetch(url, {
       ...restOpts,
       baseURL,
@@ -199,6 +201,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       },
       onRequest({ options }) {
+        errorShown = false
+        
         // Get headers at request time and apply them
         const authHeaders = getAuthHeaders()
         options.headers = new Headers({
@@ -212,6 +216,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       },
       onResponse({ response }) {
+        errorShown = false
         
         // Call custom onResponse if provided
         if (customOnResponse) {
@@ -219,11 +224,15 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       },
       onResponseError({ response }) {
-        // Automatically show error toast for failed requests
-        if (response?._data) {
-          showErrorToast(response._data)
-        } else if (response?.statusText) {
-          showErrorToast({ message: response.statusText })
+        if (!errorShown) {
+          errorShown = true
+          
+          // Automatically show error toast for failed requests
+          if (response?._data) {
+            showErrorToast(response._data)
+          } else if (response?.statusText) {
+            showErrorToast({ message: response.statusText })
+          }
         }
         
         // Call custom onResponseError if provided
@@ -240,6 +249,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       return useApiFetch('/customer/auth/register', {
         method: 'POST',
         body: userData,
+        watch: false, // Don't watch body changes to prevent re-fetch on typing
       })
     },
     
@@ -247,6 +257,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       return useApiFetch('/customer/auth/login', {
         method: 'POST',
         body: credentials,
+        watch: false, // Don't watch body changes to prevent re-fetch on typing
       })
     },
     

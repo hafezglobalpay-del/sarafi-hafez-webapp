@@ -1,20 +1,20 @@
 <template>
   <Card class="border-2 box-shadow-none" style="border-color: #1E40AF;">
     <template #content>
-      <div class="p-4">
-        <div class="flex items-center justify-center mb-3">
+      <div class="p-3 md:p-4">
+        <div class="flex items-center justify-center mb-2">
           <FlagIcon 
-            :flag="currency?.flag || 'circle-flags:xx'" 
+            :flag="baseCurrency?.flag || 'circle-flags:xx'" 
             size="1.2em" 
             class="mx-2 flex-shrink-0" 
           />
           <span class="text-sm font-medium text-secondary text-center leading-tight">
-            {{ $t(labelKey) }} {{ currency?.name }}
+            {{ baseCurrency?.name }} {{ $t(labelKey) }} 
           </span>
         </div>
         <div class="text-center">
           <div class="text-2xl md:text-3xl font-bold text-secondary break-all">
-            {{ formattedPrice }}
+            {{ formattedPrice || '—' }} {{ quoteCurrency?.name }}
           </div>
         </div>
       </div>
@@ -24,7 +24,11 @@
 
 <script setup>
 const props = defineProps({
-  currency: {
+  quoteCurrency: {
+    type: Object,
+    default: null
+  },
+  baseCurrency: {
     type: Object,
     default: null
   },

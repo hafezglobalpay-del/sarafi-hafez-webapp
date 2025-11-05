@@ -12,6 +12,7 @@
   "sellPrice": "Sell Price",
   "totalPayable": "Total payable:",
   "payNow": "Pay",
+  "loginFirst": "Login First",
   "creatingInvoice": "Creating Invoice...",
   "verificationRequired": "Verification Required",
   "verificationNotice": "Please complete your verification to proceed with payment",

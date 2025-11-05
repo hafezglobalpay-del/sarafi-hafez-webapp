@@ -19,9 +19,9 @@
                 size="small" @click="showNewRecipientForm = true" />
             </div>
 
-            <div class="space-y-3 max-h-60 overflow-y-auto">
+            <div class="space-y-2 max-h-60 overflow-y-auto">
               <div v-for="recipient in recipients" :key="recipient.id"
-                class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                 :class="{ 'border-primary bg-primary/5': selectedRecipient?.id === recipient.id }"
                 @click="selectRecipient(recipient)">
                 <RadioButton v-model="selectedRecipientId" :value="recipient.id" class="mr-3" />

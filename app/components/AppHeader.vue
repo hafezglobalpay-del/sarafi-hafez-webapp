@@ -1,4 +1,5 @@
 <template>
+ <v-container>
   <header class="bg-surface-0 shadow-sm">
     <Toolbar class="px-4 md:px-9 py-3 md:py-4">
       <template #start>
@@ -34,6 +35,7 @@
       @success="handleAuthSuccess"
     />
   </header>
+  </v-container>
 </template>
 
 <script setup>
