@@ -23,6 +23,7 @@
               :label="$t('auth.login')" 
               severity="primary" 
               rounded 
+              class="px-4"
               size="small"
               @click="showAuthDialog = true"
             />

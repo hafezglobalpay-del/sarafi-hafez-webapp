@@ -266,6 +266,22 @@ export default defineNuxtPlugin((nuxtApp) => {
         method: 'GET',
       })
     },
+    
+    forgotPassword(data) {
+      return useApiFetch('/forgot-password', {
+        method: 'POST',
+        body: data,
+        watch: false,
+      })
+    },
+    
+    resetPassword(data) {
+      return useApiFetch('/reset-password', {
+        method: 'POST',
+        body: data,
+        watch: false,
+      })
+    },
   }
 
   // Invoice API functions
