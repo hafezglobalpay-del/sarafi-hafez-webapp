@@ -73,6 +73,8 @@
 
     <AuthDialog 
       v-model:visible="showAuthDialog"
+      :reset-password-params="resetPasswordParams"
+      v-model:show-reset-password="showResetPasswordDialog"
       @success="handleAuthSuccess"
     />
     <RecipientDialog 
@@ -83,8 +85,9 @@
 </template>
 
 <script setup>
-const { t, locale } = useI18n()
+const { t, locale, setLocale } = useI18n()
 const router = useRouter()
+const route = useRoute()
 
 const {
   selectedCurrencyToBuy,
@@ -108,6 +111,46 @@ const {
 } = usePaymentFlow()
 
 const { isLoggedIn } = useAuth()
+
+const resetPasswordParams = computed(() => {
+  if (typeof window === 'undefined') return null
+  
+  const query = route.query
+  if (query.action === 'reset-password' && query.token && query.email) {
+    return {
+      token: String(query.token),
+      email: String(query.email),
+      lang: String(query.lang || locale.value)
+    }
+  }
+  return null
+})
+
+const showResetPasswordDialog = ref(false)
+
+watch(resetPasswordParams, (newVal) => {
+  if (newVal && newVal.token && newVal.email) {
+    showResetPasswordDialog.value = true
+  } else {
+    showResetPasswordDialog.value = false
+  }
+}, { immediate: true, deep: true })
+
+watch(() => route.query, (newQuery) => {
+  if (newQuery.action === 'reset-password' && newQuery.token && newQuery.email) {
+    showResetPasswordDialog.value = true
+    
+    if (newQuery.lang && (newQuery.lang === 'en' || newQuery.lang === 'fa')) {
+      setLocale(newQuery.lang)
+    }
+  }
+}, { immediate: true })
+
+watch(() => route.query.lang, (newLang) => {
+  if (newLang && (newLang === 'en' || newLang === 'fa') && locale.value !== newLang) {
+    setLocale(newLang)
+  }
+}, { immediate: true })
 
 useSeoMeta({
   title: () => t('meta.title'),
@@ -134,6 +177,21 @@ const openVerificationUrl = () => {
 
 onMounted(() => {
   fetchCurrencyPairs()
+  
+  nextTick(() => {
+    const query = route.query
+    if (query.action === 'reset-password' && query.token && query.email) {
+      showResetPasswordDialog.value = true
+      
+      if (query.lang && (query.lang === 'en' || query.lang === 'fa')) {
+        setLocale(query.lang)
+      }
+    }
+    
+    if (query.lang && (query.lang === 'en' || query.lang === 'fa') && locale.value !== query.lang) {
+      setLocale(query.lang)
+    }
+  })
 })
 </script>
 

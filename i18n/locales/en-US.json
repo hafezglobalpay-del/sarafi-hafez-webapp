@@ -93,7 +93,21 @@
     "registerErrorMessage": "Registration failed. Please try again",
     "verificationRedirect": "Redirecting to verification...",
     "verificationRequired": "Verification Required",
-    "verificationMessage": "Please complete the verification process to continue"
+    "verificationMessage": "Please complete the verification process to continue",
+    "forgotPassword": "Forgot Password",
+    "forgotPasswordTitle": "Password Recovery",
+    "forgotPasswordMessage": "Enter your email",
+    "forgotPasswordEmailPlaceholder": "Enter your email",
+    "forgotPasswordSuccess": "Instructions have been sent to your email",
+    "forgotPasswordSuccessTitle": "Success",
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Set New Password",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmNewPassword": "Confirm New Password",
+    "confirmNewPasswordPlaceholder": "Confirm new password",
+    "resetPasswordSuccess": "Your password has been successfully reset. Please login with your new credentials",
+    "resetPasswordSuccessTitle": "Password Updated"
   },
   "profile": {
     "personalInfo": "Personal Information",

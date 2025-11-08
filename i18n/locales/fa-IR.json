@@ -93,7 +93,21 @@
     "registerErrorMessage": "خطا در ثبت نام. لطفاً دوباره تلاش کنید",
     "verificationRedirect": "در حال انتقال به صفحه تایید...",
     "verificationRequired": "تایید هویت الزامی است",
-    "verificationMessage": "لطفاً فرآیند تایید هویت را تکمیل کنید"
+    "verificationMessage": "لطفاً فرآیند تایید هویت را تکمیل کنید",
+    "forgotPassword": "فراموشی رمز عبور",
+    "forgotPasswordTitle": "بازیابی رمز عبور",
+    "forgotPasswordMessage": "ایمیل خود را وارد کنید",
+    "forgotPasswordEmailPlaceholder": "ایمیل خود را وارد کنید",
+    "forgotPasswordSuccess": "دستورالعمل به ایمیل شما ارسال شد",
+    "forgotPasswordSuccessTitle": "ارسال موفق",
+    "resetPassword": "بازیابی رمز عبور",
+    "resetPasswordTitle": "تنظیم رمز عبور جدید",
+    "newPassword": "رمز عبور جدید",
+    "newPasswordPlaceholder": "رمز عبور جدید را وارد کنید",
+    "confirmNewPassword": "تایید رمز عبور جدید",
+    "confirmNewPasswordPlaceholder": "رمز عبور جدید را تایید کنید",
+    "resetPasswordSuccess": "رمز عبور شما با موفقیت تغییر کرد. لطفاً با اطلاعات جدید وارد شوید",
+    "resetPasswordSuccessTitle": "پسورد ویرایش شد"
   },
   "profile": {
     "personalInfo": "اطلاعات شخصی",

@@ -64,16 +64,27 @@
                 :disabled="isLoading"
               />
             </div>
-            <div class="text-center mb-4">
-              <p class="text-gray-600 text-sm">
-                {{ $t('auth.noAccount') }}
+            <div class="mb-4">
+              <div class="flex justify-end mb-2">
                 <button
-                  @click="activeTab = 'register'"
-                  class="text-primary hover:text-primary-dark font-medium underline ml-1"
+                  @click="showForgotPasswordDialog = true"
+                  class="text-primary hover:text-primary-dark font-medium underline text-sm"
                 >
-                  {{ $t('auth.registerHere') }}
+                  {{ $t('auth.forgotPassword') }}
                 </button>
-              </p>
+              </div>
+              <Divider />
+              <div class="text-center mt-2">
+                <p class="text-gray-600 text-sm">
+                  {{ $t('auth.noAccount') }}
+                  <button
+                    @click="activeTab = 'register'"
+                    class="text-primary hover:text-primary-dark font-medium underline ml-1"
+                  >
+                    {{ $t('auth.registerHere') }}
+                  </button>
+                </p>
+              </div>
             </div>
           </form>
         </div>
@@ -230,26 +241,184 @@
       </div>
     </template>
   </Dialog>
+
+  <!-- Forgot Password Dialog -->
+  <Dialog 
+    :visible="showForgotPasswordDialog" 
+    @update:visible="showForgotPasswordDialog = $event"
+    modal 
+    :header="$t('auth.forgotPasswordTitle')"
+    :style="{ width: '450px' }"
+    class="p-0"
+  >
+    <template #default>
+      <div class="p-4 pt-0 relative">
+        <form @submit.prevent="handleForgotPassword" class="space-y-4">
+          <div>
+            <label for="forgot-password-email" class="block text-sm font-medium text-gray-700 mb-2">
+              {{ $t('auth.email') }}
+            </label>
+            <InputText
+              id="forgot-password-email"
+              v-model="forgotPasswordForm.email"
+              type="email"
+              :placeholder="$t('auth.forgotPasswordEmailPlaceholder')"
+              class="w-full"
+              :class="{ 'p-invalid': forgotPasswordErrors.email }"
+              autocomplete="email"
+              required
+            />
+            <small v-if="forgotPasswordErrors.email" class="p-error mt-1 block">{{ forgotPasswordErrors.email }}</small>
+          </div>
+
+          <div class="flex gap-2">
+            <Button
+              type="submit"
+              :label="isForgotPasswordLoading ? '' : $t('auth.forgotPasswordTitle')"
+              severity="primary"
+              class="flex-1 py-3"
+              :loading="isForgotPasswordLoading"
+              :disabled="isForgotPasswordLoading"
+            />
+            <Button
+              type="button"
+              :label="$t('recipient.cancel')"
+              severity="secondary"
+              class="flex-1 py-3"
+              @click="showForgotPasswordDialog = false"
+              :disabled="isForgotPasswordLoading"
+            />
+          </div>
+        </form>
+      </div>
+    </template>
+  </Dialog>
+
+  <!-- Reset Password Dialog -->
+  <Dialog 
+    :visible="showResetPasswordDialog" 
+    @update:visible="showResetPasswordDialog = $event"
+    modal 
+    :header="$t('auth.resetPasswordTitle')"
+    :style="{ width: '450px' }"
+    class="p-0"
+  >
+    <template #default>
+      <div class="p-4 pt-0 relative">
+        <form @submit.prevent="handleResetPassword" class="space-y-4">
+          <div>
+            <label for="reset-password-new" class="block text-sm font-medium text-gray-700 mb-2">
+              {{ $t('auth.newPassword') }}
+            </label>
+            <div class="relative">
+              <InputText
+                id="reset-password-new"
+                v-model="resetPasswordForm.password"
+                :type="showResetPassword ? 'text' : 'password'"
+                :placeholder="$t('auth.newPasswordPlaceholder')"
+                class="w-full pr-10 rtl:pr-0 rtl:pl-10"
+                :class="{ 'p-invalid': resetPasswordErrors.password }"
+                autocomplete="new-password"
+                required
+              />
+              <button
+                type="button"
+                @click="showResetPassword = !showResetPassword"
+                class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <i :class="showResetPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'" class="text-sm"></i>
+              </button>
+            </div>
+            <small v-if="resetPasswordErrors.password" class="p-error mt-1 block">{{ resetPasswordErrors.password }}</small>
+          </div>
+
+          <div>
+            <label for="reset-password-confirm" class="block text-sm font-medium text-gray-700 mb-2">
+              {{ $t('auth.confirmNewPassword') }}
+            </label>
+            <div class="relative">
+              <InputText
+                id="reset-password-confirm"
+                v-model="resetPasswordForm.password_confirmation"
+                :type="showResetConfirmPassword ? 'text' : 'password'"
+                :placeholder="$t('auth.confirmNewPasswordPlaceholder')"
+                class="w-full pr-10 rtl:pr-0 rtl:pl-10"
+                :class="{ 'p-invalid': resetPasswordErrors.password_confirmation }"
+                autocomplete="new-password"
+                required
+              />
+              <button
+                type="button"
+                @click="showResetConfirmPassword = !showResetConfirmPassword"
+                class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                <i :class="showResetConfirmPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'" class="text-sm"></i>
+              </button>
+            </div>
+            <small v-if="resetPasswordErrors.password_confirmation" class="p-error mt-1 block">{{ resetPasswordErrors.password_confirmation }}</small>
+          </div>
+
+          <div class="flex gap-2">
+            <Button
+              type="submit"
+              :label="isResetPasswordLoading ? '' : $t('auth.resetPasswordTitle')"
+              severity="primary"
+              class="flex-1 py-3"
+              :loading="isResetPasswordLoading"
+              :disabled="isResetPasswordLoading"
+            />
+            <Button
+              type="button"
+              :label="$t('recipient.cancel')"
+              severity="secondary"
+              class="flex-1 py-3"
+              @click="showResetPasswordDialog = false"
+              :disabled="isResetPasswordLoading"
+            />
+          </div>
+        </form>
+      </div>
+    </template>
+  </Dialog>
 </template>
 
 <script setup>
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
+const router = useRouter()
+const { $authApi, $showSuccessToast } = useNuxtApp()
 
 const props = defineProps({
   visible: {
     type: Boolean,
     default: false
+  },
+  resetPasswordParams: {
+    type: Object,
+    default: null
+  },
+  showResetPassword: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['update:visible', 'success'])
+const emit = defineEmits(['update:visible', 'update:showResetPassword', 'success'])
 
 const activeTab = ref('login')
 const isLoading = ref(false)
 const showLoginPassword = ref(false)
 const showRegisterPassword = ref(false)
 const showConfirmPassword = ref(false)
+const showForgotPasswordDialog = ref(false)
+const isForgotPasswordLoading = ref(false)
+const showResetPasswordDialog = computed({
+  get: () => props.showResetPassword,
+  set: (value) => emit('update:showResetPassword', value)
+})
+const isResetPasswordLoading = ref(false)
+const showResetPassword = ref(false)
+const showResetConfirmPassword = ref(false)
 
 const loginForm = ref({
   email: '',
@@ -268,6 +437,19 @@ const registerForm = ref({
 })
 
 const registerErrors = ref({})
+
+const forgotPasswordForm = ref({
+  email: ''
+})
+
+const forgotPasswordErrors = ref({})
+
+const resetPasswordForm = ref({
+  password: '',
+  password_confirmation: ''
+})
+
+const resetPasswordErrors = ref({})
 
 const validateLoginForm = () => {
   loginErrors.value = {}
@@ -325,6 +507,36 @@ const validateRegisterForm = () => {
   return Object.keys(registerErrors.value).length === 0
 }
 
+const validateForgotPasswordForm = () => {
+  forgotPasswordErrors.value = {}
+  
+  if (!forgotPasswordForm.value.email) {
+    forgotPasswordErrors.value.email = t('validation.emailRequired')
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotPasswordForm.value.email)) {
+    forgotPasswordErrors.value.email = t('validation.emailInvalid')
+  }
+  
+  return Object.keys(forgotPasswordErrors.value).length === 0
+}
+
+const validateResetPasswordForm = () => {
+  resetPasswordErrors.value = {}
+  
+  if (!resetPasswordForm.value.password) {
+    resetPasswordErrors.value.password = t('validation.passwordRequired')
+  } else if (resetPasswordForm.value.password.length < 6) {
+    resetPasswordErrors.value.password = t('validation.passwordMinLength')
+  }
+  
+  if (!resetPasswordForm.value.password_confirmation) {
+    resetPasswordErrors.value.password_confirmation = t('validation.passwordRequired')
+  } else if (resetPasswordForm.value.password !== resetPasswordForm.value.password_confirmation) {
+    resetPasswordErrors.value.password_confirmation = t('validation.passwordMatch')
+  }
+  
+  return Object.keys(resetPasswordErrors.value).length === 0
+}
+
 const handleLogin = async () => {
   if (!validateLoginForm()) {
     return
@@ -378,6 +590,123 @@ const handleRegister = async () => {
   }
 }
 
+const handleForgotPassword = async () => {
+  if (!validateForgotPasswordForm()) {
+    return
+  }
+  
+  isForgotPasswordLoading.value = true
+  
+  try {
+    const { data, error } = await $authApi.forgotPassword({
+      email: forgotPasswordForm.value.email,
+      lang: locale.value
+    })
+    
+    if (error.value) {
+      console.error('Forgot password error:', error.value)
+      // Error toasts are automatically shown by the API plugin
+      return
+    }
+    
+    const response = data.value
+    
+    if (response?.is_success) {
+      if ($showSuccessToast) {
+        $showSuccessToast(t('auth.forgotPasswordSuccess'), t('auth.forgotPasswordSuccessTitle'))
+      }
+      showForgotPasswordDialog.value = false
+      forgotPasswordForm.value = { email: '' }
+      forgotPasswordErrors.value = {}
+    }
+    // Error toasts are automatically shown by the API plugin
+    
+  } catch (error) {
+    console.error('Forgot password error:', error)
+    // Error toasts are automatically shown by the API plugin
+  } finally {
+    isForgotPasswordLoading.value = false
+  }
+}
+
+const handleResetPassword = async () => {
+  if (!validateResetPasswordForm()) {
+    return
+  }
+  
+  if (!props.resetPasswordParams) {
+    console.error('Reset password parameters are missing')
+    return
+  }
+  
+  isResetPasswordLoading.value = true
+  
+  try {
+    const { data, error } = await $authApi.resetPassword({
+      token: props.resetPasswordParams.token,
+      email: props.resetPasswordParams.email,
+      lang: locale.value,
+      password: resetPasswordForm.value.password,
+      password_confirmation: resetPasswordForm.value.password_confirmation
+    })
+    
+    if (error.value) {
+      console.error('Reset password error:', error.value)
+      // Error toasts are automatically shown by the API plugin
+      return
+    }
+    
+    const response = data.value
+    
+    if (response?.is_success) {
+      if ($showSuccessToast) {
+        $showSuccessToast(t('auth.resetPasswordSuccess'), t('auth.resetPasswordSuccessTitle'))
+      }
+      
+      showResetPasswordDialog.value = false
+      resetPasswordForm.value = { password: '', password_confirmation: '' }
+      resetPasswordErrors.value = {}
+      
+      if (router) {
+        router.replace({ query: {} })
+      }
+      
+      nextTick(() => {
+        setTimeout(() => {
+          emit('update:visible', true)
+          activeTab.value = 'login'
+        }, 300)
+      })
+    }
+    // Error toasts are automatically shown by the API plugin
+    
+  } catch (error) {
+    console.error('Reset password error:', error)
+    // Error toasts are automatically shown by the API plugin
+  } finally {
+    isResetPasswordLoading.value = false
+  }
+}
+
+watch(() => props.resetPasswordParams, (newVal) => {
+  if (newVal && newVal.token && newVal.email) {
+    showResetPasswordDialog.value = true
+  }
+}, { immediate: true, deep: true })
+
+watch(() => props.showResetPassword, (newVal) => {
+  if (newVal) {
+    showResetPasswordDialog.value = true
+  }
+}, { immediate: true })
+
+watch(() => showResetPasswordDialog.value, (newVal) => {
+  if (newVal) {
+    resetPasswordForm.value = { password: '', password_confirmation: '' }
+    resetPasswordErrors.value = {}
+  }
+})
+
 watch(() => props.visible, (newVal) => {
   if (newVal) {
     loginForm.value = { email: '', password: '' }
@@ -392,6 +721,13 @@ watch(() => props.visible, (newVal) => {
     loginErrors.value = {}
     registerErrors.value = {}
     activeTab.value = 'login'
+  }
+})
+
+watch(() => showForgotPasswordDialog, (newVal) => {
+  if (newVal) {
+    forgotPasswordForm.value = { email: '' }
+    forgotPasswordErrors.value = {}
   }
 })
 </script>
