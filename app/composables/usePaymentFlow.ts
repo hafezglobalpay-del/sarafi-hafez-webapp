@@ -28,7 +28,6 @@ export const usePaymentFlow = () => {
 
   const handleAuthSuccess = () => {
     showAuthDialog.value = false
-    showRecipientDialog.value = true
   }
 
   const handleRecipientSuccess = async (recipientData: any, currencyData: any, amount: number) => {

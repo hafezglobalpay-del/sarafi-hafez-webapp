@@ -247,7 +247,7 @@
     :visible="showForgotPasswordDialog" 
     @update:visible="showForgotPasswordDialog = $event"
     modal 
-    :header="$t('auth.confirm')"
+    :header="$t('auth.forgotPasswordTitle')"
     :style="{ width: '450px' }"
     class="p-0"
   >
@@ -299,7 +299,7 @@
     :visible="showResetPasswordDialog" 
     @update:visible="showResetPasswordDialog = $event"
     modal 
-    :header="$t('auth.confirm')"
+    :header="$t('auth.resetPasswordTitle')"
     :style="{ width: '450px' }"
     class="p-0"
   >
