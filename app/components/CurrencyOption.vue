@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center">
-    <div class="flex items-center relative mr-3">
+    <div class="flex items-center relative mr-3 rtl:mr-0 rtl:ml-3">
       <FlagIcon 
         :flag="currency?.base_currency?.flag" 
         size="1.2em" 
@@ -9,7 +9,7 @@
       <FlagIcon 
         :flag="currency?.quote_currency?.flag" 
         size="1.2em" 
-        class="relative -ml-2 z-20 border-2 border-white rounded-full shadow-sm" 
+        class="relative -ml-2 z-20 border-2 border-white rounded-full shadow-sm rtl:ml-0 rtl:-mr-2" 
       />
     </div>
     <span>{{ currency?.title || '—' }}</span>
