@@ -68,11 +68,17 @@ module.exports = {
         '.rtl\\:mr-0': {
           'margin-right': '0',
         },
+        '.rtl\\:ml-3': {
+          'margin-left': '0.75rem',
+        },
         '.rtl\\:ml-4': {
           'margin-left': '1rem',
         },
         '.rtl\\:mr-4': {
           'margin-right': '1rem',
+        },
+        '.rtl\\:-mr-2': {
+          'margin-right': '-0.5rem',
         },
         '.rtl\\:flex-row-reverse': {
           'flex-direction': 'row-reverse',

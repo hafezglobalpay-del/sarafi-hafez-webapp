@@ -50,6 +50,11 @@
   margin-right: 0 !important;
 }
 
+.rtl .rtl\\:ml-3 {
+  margin-left: 0.75rem !important;
+  margin-right: 0 !important;
+}
+
 .rtl .rtl\\:ml-4 {
   margin-left: 1rem !important;
   margin-right: 0 !important;
@@ -57,6 +62,11 @@
 
 .rtl .rtl\\:mr-4 {
   margin-right: 1rem !important;
+  margin-left: 0 !important;
+}
+
+.rtl .rtl\\:-mr-2 {
+  margin-right: -0.5rem !important;
   margin-left: 0 !important;
 }
 
