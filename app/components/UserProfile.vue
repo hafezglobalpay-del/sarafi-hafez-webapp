@@ -1,21 +1,28 @@
 <template>
-  <div class="flex items-center gap-3">
-     <Button
+  <div class="flex items-center">
+    <Button
       text
       rounded
       @click="toggleMenu"
+      class="p-2"
     >
-    <div class="flex items-center gap-2">
-      <Avatar :label="userInitials" class="mr-2" style="background-color: #ece9fc; color: #2a1261" shape="circle" />
-      <div class="hidden md:block">
-        <div class="text-sm font-medium text-gray-900">
-          {{ user.name }} {{ user.family }}
+      <div class="flex items-center gap-2">
+        <Avatar 
+          :label="userInitials" 
+          class="mr-2" 
+          style="background-color: #ece9fc; color: #2a1261" 
+          shape="circle" 
+        />
+        <div class="hidden md:block text-left">
+          <div class="text-sm font-medium text-gray-900">
+            {{ user.name }} {{ user.family }}
+          </div>
+          <div class="text-xs text-gray-500">
+            {{ user.email }}
+          </div>
         </div>
-        <div class="text-xs text-gray-500">
-          {{ user.email }}
-        </div>
+        <i class="mdi mdi-chevron-down text-gray-500 text-sm ml-1"></i>
       </div>
-    </div>
     </Button>
 
     <Menu ref="menu" :model="menuItems" :popup="true">
@@ -55,16 +62,6 @@
         </div>
       </template>
     </Menu>
-
-    <Button 
-      :label="$t('logout')" 
-      icon="mdi mdi-logout" 
-      severity="primary" 
-      class="px-3 md:px-6" 
-      rounded 
-      size="small"
-      @click="handleLogout"
-    />
   </div>
 </template>
 
@@ -91,6 +88,13 @@ const menuItems = computed(() => {
       disabled: false
     })
   }
+
+  // Add logout item
+  items.push({
+    label: t('logout'),
+    icon: 'mdi mdi-logout',
+    command: () => handleLogout()
+  })
 
   return items
 })
