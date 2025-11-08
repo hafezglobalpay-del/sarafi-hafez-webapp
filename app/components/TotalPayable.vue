@@ -15,7 +15,7 @@
             <span v-if="isLoading" class="font-bold text-lg sm:text-xl text-gray-500">
               {{ $t('calculating') }}
             </span>
-            <span v-else-if="amount" class="font-bold text-lg sm:text-xl break-all">
+            <span v-else-if="amount" class="font-bold text-lg sm:text-xl break-all" dir="ltr">
               {{ Number(amount).toLocaleString() }} {{ currency?.symbol }}
             </span>
             <span v-else class="font-bold text-lg sm:text-xl text-gray-500">
