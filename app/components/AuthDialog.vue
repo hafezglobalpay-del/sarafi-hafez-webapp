@@ -38,7 +38,7 @@
                   v-model="loginForm.password"
                   :type="showLoginPassword ? 'text' : 'password'"
                   :placeholder="$t('auth.passwordPlaceholder')"
-                  class="w-full pr-10"
+                  class="w-full pr-10 rtl:pr-0 rtl:pl-10"
                   :class="{ 'p-invalid': loginErrors.password }"
                   autocomplete="current-password"
                   required
@@ -46,7 +46,7 @@
                 <button
                   type="button"
                   @click="showLoginPassword = !showLoginPassword"
-                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
                   <i :class="showLoginPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'" class="text-sm"></i>
                 </button>
@@ -161,7 +161,7 @@
                     v-model="registerForm.password"
                     :type="showRegisterPassword ? 'text' : 'password'"
                     :placeholder="$t('auth.passwordPlaceholder')"
-                    class="w-full pr-10"
+                    class="w-full pr-10 rtl:pr-0 rtl:pl-10"
                     :class="{ 'p-invalid': registerErrors.password }"
                     autocomplete="new-password"
                     required
@@ -169,7 +169,7 @@
                   <button
                     type="button"
                     @click="showRegisterPassword = !showRegisterPassword"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
                     <i :class="showRegisterPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'" class="text-sm"></i>
                   </button>
@@ -187,7 +187,7 @@
                     v-model="registerForm.password_confirmation"
                     :type="showConfirmPassword ? 'text' : 'password'"
                     :placeholder="$t('auth.confirmPasswordPlaceholder')"
-                    class="w-full pr-10"
+                    class="w-full pr-10 rtl:pr-0 rtl:pl-10"
                     :class="{ 'p-invalid': registerErrors.password_confirmation }"
                     autocomplete="new-password"
                     required
@@ -195,7 +195,7 @@
                   <button
                     type="button"
                     @click="showConfirmPassword = !showConfirmPassword"
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    class="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
                     <i :class="showConfirmPassword ? 'mdi mdi-eye-off' : 'mdi mdi-eye'" class="text-sm"></i>
                   </button>

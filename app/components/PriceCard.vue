@@ -9,11 +9,16 @@
             class="mx-2 flex-shrink-0" 
           />
           <span class="text-sm font-medium text-secondary text-center leading-tight ">
-            {{ baseCurrency?.name }} {{ $t('buyPrice') }} 
+            <template v-if="locale === 'fa'">
+              {{ $t('buyPrice') }} {{ baseCurrency?.name }}
+            </template>
+            <template v-else>
+              {{ baseCurrency?.name }} {{ $t('buyPrice') }}
+            </template>
           </span>
         </div>
         <div class="text-center">
-          <div class="text-2xl md:text-3xl font-bold text-secondary break-all">
+          <div class="text-2xl md:text-3xl font-bold text-secondary break-all" dir="ltr">
             {{ formattedPrice || '—' }} {{ quoteCurrency?.name }}
           </div>
         </div>
@@ -23,6 +28,8 @@
 </template>
 
 <script setup>
+const { locale } = useI18n()
+
 const props = defineProps({
   quoteCurrency: {
     type: Object,

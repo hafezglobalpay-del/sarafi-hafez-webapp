@@ -89,6 +89,18 @@ module.exports = {
         '.rtl\\:rotate-180': {
           'transform': 'rotate(180deg)',
         },
+        '.rtl\\:pr-0': {
+          'padding-right': '0',
+        },
+        '.rtl\\:pl-10': {
+          'padding-left': '2.5rem',
+        },
+        '.rtl\\:right-auto': {
+          'right': 'auto',
+        },
+        '.rtl\\:left-3': {
+          'left': '0.75rem',
+        },
       })
     }
   ],
