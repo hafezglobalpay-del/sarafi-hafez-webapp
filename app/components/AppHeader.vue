@@ -1,7 +1,7 @@
 <template>
  <v-container>
   <header class="bg-surface-0 shadow-sm">
-    <Toolbar class="px-4 md:px-9 py-3 md:py-4">
+    <Toolbar class="px-6 md:px-12 lg:px-16 py-3 md:py-4">
       <template #start>
         <div class="flex items-center gap-2 md:gap-3">
           <img 

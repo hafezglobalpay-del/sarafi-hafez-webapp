@@ -6,16 +6,20 @@
           <span class="text-sm sm:text-base font-medium text-gray-700 text-center sm:text-right">
             {{ $t('totalPayable') }}
           </span>
-          <div class="flex items-center">
+          <div class="flex items-center gap-2" dir="ltr">
             <FlagIcon 
+              v-if="!isLoading && currency"
               :flag="currency?.flag || 'circle-flags:xx'" 
               size="1.2em" 
               class="mx-2" 
             />
-            <span v-if="isLoading" class="font-bold text-lg sm:text-xl text-gray-500">
-              {{ $t('calculating') }}
-            </span>
-            <span v-else-if="amount" class="font-bold text-lg sm:text-xl break-all" dir="ltr">
+            <div v-if="isLoading" class="flex items-center gap-3">
+              <i class="mdi mdi-loading mdi-spin text-xl text-primary-600"></i>
+              <span class="font-bold text-lg sm:text-xl text-gray-600">
+                {{ $t('calculating') }}
+              </span>
+            </div>
+            <span v-else-if="amount" class="font-bold text-lg sm:text-xl break-all">
               {{ Number(amount).toLocaleString() }} {{ currency?.symbol }}
             </span>
             <span v-else class="font-bold text-lg sm:text-xl text-gray-500">

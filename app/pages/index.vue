@@ -25,7 +25,6 @@
           <AmountInput 
             v-model="amountToConvert"
             :currency="selectedCurrencyData?.base_currency"
-            @input="handleAmountInput"
           />
 
           <TotalPayable 
@@ -94,8 +93,7 @@ const {
   isLoadingCalculation,
   currencies,
   selectedCurrencyData,
-  fetchCurrencyPairs,
-  handleAmountInput
+  fetchCurrencyPairs
 } = useCurrencyExchange()
 
 const {

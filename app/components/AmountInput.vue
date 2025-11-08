@@ -36,10 +36,6 @@ const props = defineProps({
     type: Object,
     default: null
   },
-  debounceMs: {
-    type: Number,
-    default: 300
-  }
 })
 
 const emit = defineEmits(['update:modelValue', 'input'])
@@ -53,28 +49,9 @@ const inputStyles = computed(() => ({
   textAlign: locale.value === 'fa' ? 'right' : 'left'
 }))
 
-// Debounce timer ref
-let debounceTimer = null
-
 const handleInput = (event) => {
   const value = event.target.value
-  
-  // Clear existing timer
-  if (debounceTimer) {
-    clearTimeout(debounceTimer)
-  }
-  
-  // Set new timer
-  debounceTimer = setTimeout(() => {
-    emit('update:modelValue', value)
-    emit('input', event)
-  }, props.debounceMs)
+  emit('update:modelValue', value)
+  emit('input', event)
 }
-
-// Cleanup timer on unmount
-onUnmounted(() => {
-  if (debounceTimer) {
-    clearTimeout(debounceTimer)
-  }
-})
 </script>

@@ -8,6 +8,8 @@ export const useCurrencyExchange = () => {
   const amountToConvert = ref<number>(1)
   const calculatedAmount = ref<number | null>(null)
   const isLoadingCalculation = ref<boolean>(false)
+  
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
   const currencies = computed(() => {
     if (!exchangeRatesData.value || !Array.isArray(exchangeRatesData.value)) {
@@ -56,6 +58,9 @@ export const useCurrencyExchange = () => {
     
     if (!amountValue || !selectedCurrencyData.value?.id || amountValue <= 0) {
       calculatedAmount.value = null
+      if (showLoading) {
+        isLoadingCalculation.value = false
+      }
       return
     }
 
@@ -75,14 +80,13 @@ export const useCurrencyExchange = () => {
       if (response.error.value) {
         console.error('Error calculating amount:', response.error.value)
         calculatedAmount.value = null
-        return
-      }
-      
-      const responseData = response.data.value
-      if (responseData?.entity) {
-        calculatedAmount.value = responseData.entity
-      } else if (responseData) {
-        calculatedAmount.value = responseData
+      } else {
+        const responseData = response.data.value
+        if (responseData?.entity) {
+          calculatedAmount.value = responseData.entity
+        } else if (responseData) {
+          calculatedAmount.value = responseData
+        }
       }
     } catch (error) {
       console.error('Error calculating amount:', error)
@@ -100,27 +104,31 @@ export const useCurrencyExchange = () => {
     }
   }
 
-  const handleAmountInput = (event: Event) => {
-    const target = event.target as HTMLInputElement
-    const amount = target.value
-    amountToConvert.value = parseFloat(amount) || 0
-    calculateAmount()
-  }
-
   watch(currencies, (newCurrencies) => {
     if (newCurrencies.length > 0 && !selectedCurrencyToBuy.value) {
       selectedCurrencyToBuy.value = newCurrencies[0]?.code || null
     }
   }, { immediate: true })
 
-  watch(amountToConvert, (newValue) => {
+  watch(amountToConvert, (newValue, oldValue) => {
     if (newValue < 0) {
       amountToConvert.value = 0
       return
     }
     
-    if (newValue > 0) {
-      calculateAmount()
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+    
+    if (newValue > 0 && newValue !== oldValue && selectedCurrencyData.value?.id) {
+      isLoadingCalculation.value = true
+      
+      debounceTimer = setTimeout(() => {
+        calculateAmount(undefined, true)
+      }, 500)
+    } else if (newValue === 0 || !newValue) {
+      calculatedAmount.value = null
+      isLoadingCalculation.value = false
     }
   })
 
@@ -155,19 +163,21 @@ export const useCurrencyExchange = () => {
 
   onUnmounted(() => {
     stopAutoRefresh()
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
   })
 
   return {
-    exchangeRatesData,
+    exchangeRatesData: readonly(exchangeRatesData),
     selectedCurrencyToBuy,
     amountToConvert,
-    calculatedAmount,
-    isLoadingCalculation,
+    calculatedAmount: readonly(calculatedAmount),
+    isLoadingCalculation: readonly(isLoadingCalculation),
     currencies,
     selectedCurrencyData,
     fetchCurrencyPairs,
     calculateAmount,
-    handleAmountInput,
     refreshCalculation,
     startAutoRefresh,
     stopAutoRefresh
