@@ -8,8 +8,8 @@
             size="1.2em" 
             class="mx-2 flex-shrink-0" 
           />
-          <span class="text-sm font-medium text-secondary text-center leading-tight">
-            {{ baseCurrency?.name }} {{ $t(labelKey) }} 
+          <span class="text-sm font-medium text-secondary text-center leading-tight ">
+            {{ baseCurrency?.name }} {{ $t('buyPrice') }} 
           </span>
         </div>
         <div class="text-center">
@@ -36,10 +36,7 @@ const props = defineProps({
     type: [String, Number],
     default: null
   },
-  labelKey: {
-    type: String,
-    required: true
-  }
+ 
 })
 
 const formattedPrice = computed(() => {

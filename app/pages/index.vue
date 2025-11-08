@@ -18,7 +18,7 @@
               :quote-currency="selectedCurrencyData?.quote_currency"
               :base-currency="selectedCurrencyData?.base_currency"
               :price="selectedCurrencyData?.buy_price"
-              label-key="Buy Price"
+             
             />
           </div>
 
