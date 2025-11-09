@@ -1,6 +1,7 @@
 <template>
- <div class="w-full px-6 md:px-12 lg:px-16">
+ 
   <header class="bg-surface-0 shadow-sm">
+    <div class="w-full px-6 md:px-12 lg:px-16">
     <Toolbar class="py-3 md:py-4 border-none">
       <template #start>
         <div class="flex items-center gap-2 md:gap-3">
@@ -35,8 +36,9 @@
       v-model:visible="showAuthDialog"
       @success="handleAuthSuccess"
     />
+    </div>
   </header>
-  </div>
+  
 </template>
 
 <script setup>
@@ -55,8 +57,5 @@ function handleAuthSuccess() {
 </script>
 
 <style scoped>
-:deep(.p-toolbar) {
-  border: none !important;
-  border-bottom: none !important;
-}
+
 </style>
