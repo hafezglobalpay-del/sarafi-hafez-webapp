@@ -57,5 +57,8 @@ function handleAuthSuccess() {
 </script>
 
 <style scoped>
-
+:deep(.p-toolbar) {
+  border: none !important;
+  background: transparent !important;
+}
 </style>
