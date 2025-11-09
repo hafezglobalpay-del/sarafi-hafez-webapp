@@ -1,6 +1,12 @@
 <template>
-  <Dialog :visible="visible" @update:visible="$emit('update:visible', $event)" modal :style="{ width: '600px' }"
-    class="p-0">
+  <Dialog 
+    :visible="visible" 
+    @update:visible="$emit('update:visible', $event)" 
+    modal 
+    :header="$t('recipient.selectRecipient')"
+    :style="{ width: '600px' }"
+    class="p-0"
+  >
     <template #default>
       <div class="p-4 pt-0 relative">
         <div class="space-y-6">

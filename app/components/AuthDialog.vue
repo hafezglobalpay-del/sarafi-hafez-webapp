@@ -3,7 +3,7 @@
     :visible="visible" 
     @update:visible="$emit('update:visible', $event)"
     modal 
-    header=""
+    :header="dialogTitle"
     :style="{ width: '450px' }"
     class="p-0"
   >
@@ -273,19 +273,19 @@
 
           <div class="flex gap-2">
             <Button
-              type="submit"
-              :label="isForgotPasswordLoading ? '' : $t('auth.forgotPasswordTitle')"
-              severity="primary"
-              class="flex-1 py-3"
-              :loading="isForgotPasswordLoading"
-              :disabled="isForgotPasswordLoading"
-            />
-            <Button
               type="button"
               :label="$t('recipient.cancel')"
               severity="secondary"
               class="flex-1 py-3"
               @click="showForgotPasswordDialog = false"
+              :disabled="isForgotPasswordLoading"
+            />
+            <Button
+              type="submit"
+              :label="isForgotPasswordLoading ? '' : $t('auth.confirm')"
+              severity="primary"
+              class="flex-1 py-3"
+              :loading="isForgotPasswordLoading"
               :disabled="isForgotPasswordLoading"
             />
           </div>
@@ -360,19 +360,19 @@
 
           <div class="flex gap-2">
             <Button
-              type="submit"
-              :label="isResetPasswordLoading ? '' : $t('auth.resetPasswordTitle')"
-              severity="primary"
-              class="flex-1 py-3"
-              :loading="isResetPasswordLoading"
-              :disabled="isResetPasswordLoading"
-            />
-            <Button
               type="button"
               :label="$t('recipient.cancel')"
               severity="secondary"
               class="flex-1 py-3"
               @click="showResetPasswordDialog = false"
+              :disabled="isResetPasswordLoading"
+            />
+            <Button
+              type="submit"
+              :label="isResetPasswordLoading ? '' : $t('auth.confirm')"
+              severity="primary"
+              class="flex-1 py-3"
+              :loading="isResetPasswordLoading"
               :disabled="isResetPasswordLoading"
             />
           </div>
@@ -407,6 +407,10 @@ const emit = defineEmits(['update:visible', 'update:showResetPassword', 'success
 
 const activeTab = ref('login')
 const isLoading = ref(false)
+
+const dialogTitle = computed(() => {
+  return activeTab.value === 'login' ? t('auth.login') : t('auth.register')
+})
 const showLoginPassword = ref(false)
 const showRegisterPassword = ref(false)
 const showConfirmPassword = ref(false)
