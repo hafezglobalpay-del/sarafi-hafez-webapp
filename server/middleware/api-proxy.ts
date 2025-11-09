@@ -51,7 +51,10 @@ export default defineEventHandler(async (event) => {
       headers: proxyHeaders,
       body: body ? JSON.stringify(body) : undefined,
       // CRITICAL: Don't throw on error status codes
-      ignoreResponseError: true,
+      ignoreResponseError: false,
+      timeout: 30000,
+      retry: 3,
+      retryDelay: 5000,
     })
     
     // Set the response status from backend
