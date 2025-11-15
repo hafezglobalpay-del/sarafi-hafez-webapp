@@ -249,6 +249,9 @@
     modal 
     :header="$t('auth.forgotPasswordTitle')"
     :style="{ width: '450px' }"
+    :closable="false"
+    :closeOnEscape="false"
+    :dismissableMask="false"
     class="p-0"
   >
     <template #default>
@@ -297,10 +300,13 @@
   <!-- Reset Password Dialog -->
   <Dialog 
     :visible="showResetPasswordDialog" 
-    @update:visible="showResetPasswordDialog = $event"
+    @update:visible="handleResetPasswordDialogClose"
     modal 
     :header="$t('auth.resetPasswordTitle')"
     :style="{ width: '450px' }"
+    :closable="false"
+    :closeOnEscape="false"
+    :dismissableMask="false"
     class="p-0"
   >
     <template #default>
@@ -364,7 +370,7 @@
               :label="$t('recipient.cancel')"
               severity="secondary"
               class="flex-1 py-3"
-              @click="showResetPasswordDialog = false"
+              @click="handleResetPasswordCancel"
               :disabled="isResetPasswordLoading"
             />
             <Button
@@ -584,7 +590,6 @@ const handleRegister = async () => {
       emit('success')
       emit('update:visible', false)
     }
-    // Error toasts are automatically shown by the API plugin
     
   } catch (error) {
     console.error('Registration error:', error)
@@ -623,11 +628,9 @@ const handleForgotPassword = async () => {
       forgotPasswordForm.value = { email: '' }
       forgotPasswordErrors.value = {}
     }
-    // Error toasts are automatically shown by the API plugin
     
   } catch (error) {
     console.error('Forgot password error:', error)
-    // Error toasts are automatically shown by the API plugin
   } finally {
     isForgotPasswordLoading.value = false
   }
@@ -656,7 +659,6 @@ const handleResetPassword = async () => {
     
     if (error.value) {
       console.error('Reset password error:', error.value)
-      // Error toasts are automatically shown by the API plugin
       return
     }
     
@@ -670,7 +672,7 @@ const handleResetPassword = async () => {
       showResetPasswordDialog.value = false
       resetPasswordForm.value = { password: '', password_confirmation: '' }
       resetPasswordErrors.value = {}
-      
+     
       if (router) {
         router.replace({ query: {} })
       }
@@ -710,6 +712,21 @@ watch(() => showResetPasswordDialog.value, (newVal) => {
     resetPasswordErrors.value = {}
   }
 })
+
+const handleResetPasswordCancel = () => {
+  showResetPasswordDialog.value = false
+  resetPasswordForm.value = { password: '', password_confirmation: '' }
+  resetPasswordErrors.value = {}
+  if (router) {
+    router.replace({ query: {} })
+  }
+}
+const handleResetPasswordDialogClose = (value) => {
+  if (!value && router) {
+    router.replace({ query: {} })
+  }
+  showResetPasswordDialog.value = value
+}
 
 watch(() => props.visible, (newVal) => {
   if (newVal) {
